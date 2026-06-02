@@ -23,12 +23,12 @@
         .font-cursive {
             font-family: 'Alex Brush', cursive;
         }
-        /* Custom slide backgrounds with premium transitions */
+        /* Custom slide backgrounds matching image_49a9a2.png blush-rose tones */
         .bg-candlelight {
-            background: radial-gradient(circle, #fffbf9 0%, #f9f1ec 70%, #f0e1d7 100%);
+            background: radial-gradient(circle, #fffbf9 0%, #f7e6de 60%, #ebd3c8 100%);
         }
         .bg-white-glow {
-            background: radial-gradient(circle, #ffffff 0%, #fafafa 70%, #f2f2f2 100%);
+            background: radial-gradient(circle, #ffffff 0%, #fcf6f3 70%, #f3ded5 100%);
         }
         
         /* Ultra-sharp image rendering optimization */
@@ -39,64 +39,77 @@
             transform: translateZ(0); /* Force GPU acceleration for crisp zoom */
         }
 
-        /* Subtle luxury zoom animation to keep vertical images 100% sharp and un-blurred */
+        /* Enhanced luxury zoom animation for a more visible romantic motion */
         .zoom-in-active {
             animation: softZoom 7.5s ease-out forwards;
         }
         @keyframes softZoom {
             from { transform: scale(1.0); }
-            to { transform: scale(1.03); } /* Mild scale to completely prevent blurriness */
+            to { transform: scale(1.06); } /* Increased slightly to 1.06 for more prominent motion without losing clarity */
         }
         /* Golden romantic border shadow for photo frames */
         .gold-shadow {
-            box-shadow: 0 20px 45px rgba(197, 160, 89, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 25px 55px rgba(110, 38, 44, 0.15), 0 1px 4px rgba(0, 0, 0, 0.05);
         }
         /* Hide mouse cursor after idle */
         .cursor-none {
             cursor: none;
         }
-        /* Floating hearts styling */
+        /* Floating hearts and butterflies styling */
         .floating-heart {
             position: absolute;
             pointer-events: none;
             opacity: 0;
-            animation: floatUp 8s ease-in-out infinite;
+            animation: floatUp 9s ease-in-out infinite;
         }
         @keyframes floatUp {
             0% {
-                transform: translateY(110vh) translateX(0) scale(0.5) rotate(0deg);
+                transform: translateY(110vh) translateX(0) scale(0.4) rotate(0deg);
                 opacity: 0;
             }
             15% {
-                opacity: 0.25;
+                opacity: 0.3;
             }
             85% {
-                opacity: 0.25;
+                opacity: 0.3;
             }
             100% {
-                transform: translateY(-10vh) translateX(100px) scale(1.2) rotate(360deg);
+                transform: translateY(-10vh) translateX(120px) scale(1.2) rotate(360deg);
                 opacity: 0;
             }
+        }
+        /* Beautiful cursive glow to replicate the text styling */
+        .cursive-glow {
+            text-shadow: 0 4px 14px rgba(110, 38, 44, 0.18);
         }
     </style>
 </head>
 <body class="w-screen h-screen flex items-center justify-center relative select-none bg-[#0c0806]">
 
-    <!-- FLOATING HEARTS BACKGROUND EFFECT -->
+    <!-- RESPONSIVE SVG MASK FOR EXQUISITE HEART CLIPPING -->
+    <svg width="0" height="0" class="absolute">
+        <defs>
+            <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+                <path d="M 0.5 0.24 C 0.44 0.07, 0.24 0.03, 0.11 0.16 C -0.03 0.31, -0.02 0.57, 0.15 0.73 L 0.5 1.0 L 0.85 0.73 C 1.02 0.57, 1.03 0.31, 0.89 0.16 C 0.76 0.03, 0.56 0.07, 0.5 0.24 Z" />
+            </clipPath>
+        </defs>
+    </svg>
+
+    <!-- FLOATING HEARTS & BUTTERFLIES BACKGROUND EFFECT -->
     <div id="hearts-bg" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
 
     <!-- MASTER CONTAINER (Standardized Widescreen 16:9 aspect ratio projection canvas) -->
     <div id="slideshow-canvas" class="relative z-10 w-full h-full max-w-[1920px] max-h-[1080px] aspect-video overflow-hidden transition-all duration-[1200ms] ease-in-out bg-candlelight shadow-2xl">
         
         <!-- ACTIVE SLIDE RENDER AREA -->
-        <div id="slide-content" class="absolute inset-0 z-10 flex items-center justify-center p-8 md:p-12 lg:p-16 transition-opacity duration-700 ease-in-out">
+        <div id="slide-content" class="absolute inset-0 z-10 flex items-center justify-center p-6 md:p-10 lg:p-12 transition-opacity duration-700 ease-in-out">
             <!-- Content gets injected dynamically by JavaScript -->
         </div>
 
         <!-- ROMANTIC HEART TRANSITION OVERLAY (The Heart-Wipe mechanism) -->
         <div id="heart-overlay" class="pointer-events-none absolute inset-0 z-50 flex items-center justify-center opacity-0 transition-all duration-[600ms] ease-in-out">
             <!-- A massive SVG heart scaling from center to cover the entire projector grid -->
-            <svg id="transition-heart" viewBox="0 0 512 512" class="w-64 h-64 text-[#e0b094] fill-current transform scale-0 transition-transform duration-[600ms] ease-in-out" style="filter: drop-shadow(0 0 50px rgba(197, 160, 89, 0.8));">
+            <svg id="transition-heart" viewBox="0 0 512 512" class="w-64 h-64 text-[#e0b094] fill-current transform scale-0 transition-transform duration-[600ms] ease-in-out" style="filter: drop-shadow(0 0 50px rgba(110, 38, 44, 0.8));">
                 <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
             </svg>
         </div>
@@ -140,106 +153,108 @@
 
     <!-- MAIN PRESENTATION SCRIPT -->
     <script>
-        // Array containing all 11 slides with updated and accurate image mappings
+        // Array containing all 11 slides with clean, URL-safe image paths for GitHub Pages
         const slides = [
             {
-                image: "Bản sao của TRI_4974.jpg",
+                image: "tri_4974.jpg",
                 title: "Welcome to Our Beginning",
-                subtitle: "Tình Yêu Khởi Đầu",
+                subtitle: "Thanh Tâm & Thanh Phương",
+                date: "06 . 06 . 2026",
                 quote: "Hôm nay, một chương mới chính thức bắt đầu trong hành trình hạnh phúc của hai chúng ta.",
                 layout: "horizontal",
                 bgClass: "bg-candlelight",
-                accentColor: "#c5a059"
+                accentColor: "#6e262c" // Romantic rosewood matching image_49a9a2.png
             },
             {
-                image: "Bản sao của TRI_4879.jpg",
+                image: "tri_4879.jpg",
                 title: "The Dreamy Bride",
                 subtitle: "Nàng Thơ Lộng Lẫy",
                 quote: "Dịu dàng trong tà váy bồng bềnh, em là món quà tuyệt vời nhất mà anh có được trong cuộc đời.",
                 layout: "vertical",
                 bgClass: "bg-candlelight",
-                accentColor: "#c5a059"
+                accentColor: "#6e262c"
             },
             {
-                image: "Bản sao của TRI_4990.jpg",
+                image: "tri_4990.jpg",
                 title: "The Elegant Groom",
                 subtitle: "Chú Rể Bản Lĩnh",
                 quote: "Vững chãi, ấm áp, người sẽ luôn chở che và cùng em đi qua mọi bão giông cuộc đời.",
                 layout: "vertical",
                 bgClass: "bg-candlelight",
-                accentColor: "#c5a059"
+                accentColor: "#6e262c"
             },
             {
-                image: "Bản sao của TRI_4956.jpg",
+                image: "tri_4956.jpg",
                 title: "Symphony of Hearts",
                 subtitle: "Khúc Nhạc Tình Yêu",
                 quote: "Khi hai tâm hồn cùng hòa chung nhịp đập, mọi khoảng cách đều hóa hư vô.",
                 layout: "vertical",
                 bgClass: "bg-candlelight",
-                accentColor: "#c5a059"
+                accentColor: "#6e262c"
             },
             {
-                image: "Bản sao của TRI_4849.jpg",
+                image: "tri_4849.jpg",
                 title: "Our Golden Days",
                 subtitle: "Thế Giới Của Hai Ta",
                 quote: "Ánh mắt ta trao nhau chứa đựng những hẹn ước trăm năm ngọt ngào và bền chặt.",
                 layout: "horizontal",
                 bgClass: "bg-candlelight",
-                accentColor: "#c5a059"
+                accentColor: "#6e262c"
             },
             {
-                image: "Bản sao của TRI_5007.jpg",
+                image: "tri_5007.jpg",
                 title: "A Bright Tomorrow",
                 subtitle: "Sánh Bước Tương Lai",
                 quote: "Bên nhau thanh lịch, tự tin mở lối tiến vào một tương lai tươi sáng và ngập tràn hạnh phúc.",
                 layout: "vertical",
                 bgClass: "bg-white-glow",
-                accentColor: "#d2ab99"
+                accentColor: "#c5a059"
             },
             {
-                image: "Bản sao của TRI_5015.jpg",
+                image: "tri_5015.jpg",
                 title: "Joy & Sweet Laughter",
                 subtitle: "Khoảnh Khắc Rạng Rỡ",
                 quote: "Nụ cười rạng ngời của em chính là ánh ban mai sưởi ấm thế giới của anh mỗi ngày.",
                 layout: "vertical",
                 bgClass: "bg-white-glow",
-                accentColor: "#d2ab99"
+                accentColor: "#c5a059"
             },
             {
-                image: "Bản sao của TRI_5021.jpg",
+                image: "tri_5021.jpg",
                 title: "A Tender Bloom",
                 subtitle: "Hương Sắc Hạnh Phúc",
                 quote: "Những đóa hoa nở rộ trên tay em như lời chúc phúc ngọt ngào nhất cho tình yêu bền chặt.",
                 layout: "vertical",
                 bgClass: "bg-white-glow",
-                accentColor: "#d2ab99"
+                accentColor: "#c5a059"
             },
             {
-                image: "Bản sao của TRI_5029.jpg",
+                image: "tri_5029.jpg",
                 title: "The Promise of Love",
                 subtitle: "Hôn Ước Trăm Năm",
                 quote: "Một nụ hôn ngọt ngào thay vạn lời hứa, ta thuộc về nhau mãi mãi từ giây phút này.",
                 layout: "vertical",
                 bgClass: "bg-white-glow",
-                accentColor: "#d2ab99"
+                accentColor: "#c5a059"
             },
             {
-                image: "Bản sao của TRI_5045.jpg",
+                image: "tri_5045.jpg",
                 title: "Perfect Companions",
                 subtitle: "Tựa Đầu Bên Nhau",
                 quote: "Dù cuộc sống có đổi thay, cái tựa tay ấm áp này vẫn mãi là điểm tựa bình yên nhất.",
                 layout: "vertical",
                 bgClass: "bg-white-glow",
-                accentColor: "#d2ab99"
+                accentColor: "#c5a059"
             },
             {
-                image: "Bản sao của TRI_11.jpg", // 11th Photo Placeholder
+                image: "tri_11.jpg", // 11th Photo Placeholder
                 title: "With Deep Gratitude",
                 subtitle: "Lời Cảm Ơn Chân Thành",
+                date: "06 . 06 . 2026",
                 quote: "Chúng con xin trân trọng cảm ơn gia đình, bạn bè và quý quan khách đã đến chung vui, chúc phúc.",
                 layout: "horizontal",
                 bgClass: "bg-candlelight",
-                accentColor: "#c5a059"
+                accentColor: "#6e262c"
             }
         ];
 
@@ -250,12 +265,12 @@
         let lastInteractionTime = Date.now();
         let isTransitioning = false; // Flag to prevent multiple rapid clicks during active animation
 
-        // Dynamic Heart Ribbon design
+        // Dynamic Heart Ribbon design for subpages (made slightly wider and clearer)
         function getHeartOrnament(accent) {
             return `
-                <div class="flex items-center justify-center gap-4 my-2 opacity-95 w-full max-w-[280px]">
+                <div class="flex items-center justify-center gap-5 my-2 opacity-95 w-full max-w-[320px]">
                     <div class="h-[1px] flex-1" style="background: linear-gradient(to right, transparent, ${accent});"></div>
-                    <svg viewBox="0 0 100 45" class="w-12 h-6" style="fill: ${accent};">
+                    <svg viewBox="0 0 100 45" class="w-14 h-7" style="fill: ${accent};">
                         <path d="M 35,15 C 31,9 23,9 19,15 C 14,22 25,32 35,38 C 45,32 56,22 51,15 C 47,9 39,9 35,15 Z" />
                         <path d="M 65,15 C 61,9 53,9 49,15 C 44,22 55,32 65,38 C 75,32 86,22 81,15 C 77,9 69,9 65,15 Z" opacity="0.85" />
                     </svg>
@@ -264,25 +279,112 @@
             `;
         }
 
-        // Render layout dynamically - perfectly scaled to maintain 100% native resolution clarity
+        // Beautiful butterfly & floral wreath outline (Scaled beautifully for larger cover hearts)
+        function getWreathDecoration() {
+            return `
+                <div class="absolute inset-0 z-20 pointer-events-none scale-[1.08] flex items-center justify-center">
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-[#e0b094]/80 fill-none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Dual fine heart outline border rings -->
+                        <path d="M 50 24 C 44 7, 24 3, 11 16 C -0.03 31, -0.02 57, 15 73 L 50 100 L 85 73 C 100.02 57, 100.03 31, 89 16 C 76 3, 56 7, 50 24 Z" stroke="#e6b89c" stroke-width="1.2" stroke-dasharray="1.5 1.5" />
+                        <path d="M 50 26 C 45 10, 26 6, 14 18 C 3 32, 3 55, 18 70 L 50 97 L 82 70 C 97 55, 97 32, 86 18 C 74 6, 55 10, 50 26 Z" stroke="#6e262c" stroke-width="0.5" opacity="0.3" />
+                        
+                        <!-- Hand-drawn vector butterfly and blossom accents mimicking image_49a9a2.png -->
+                        <!-- Butterfly Top-Left -->
+                        <g transform="translate(10, 18) scale(0.35) rotate(-20)" fill="#6e262c">
+                            <path d="M12 10.5c-.13-1.34-.6-2.55-1.4-3.5C9.7 5.9 8.2 5 6.5 5 3.5 5 1 7.5 1 10.5c0 3.2 2.5 6.4 6 8.5.5-1.5 1.5-2.5 3.5-3.5M12 10.5c.13-1.34.6-2.55 1.4-3.5 1-1.1 2.4-2 4.1-2 3 0 5.5 2.5 5.5 5.5 0 3.2-2.5 6.4-6 8.5-.5-1.5-1.5-2.5-3.5-3.5" opacity="0.8"/>
+                        </g>
+                        <!-- Butterfly Right-Center -->
+                        <g transform="translate(82, 45) scale(0.38) rotate(15)" fill="#e6b89c">
+                            <path d="M12 10.5c-.13-1.34-.6-2.55-1.4-3.5C9.7 5.9 8.2 5 6.5 5 3.5 5 1 7.5 1 10.5c0 3.2 2.5 6.4 6 8.5.5-1.5 1.5-2.5 3.5-3.5M12 10.5c.13-1.34.6-2.55 1.4-3.5 1-1.1 2.4-2 4.1-2 3 0 5.5 2.5 5.5 5.5 0 3.2-2.5 6.4-6 8.5-.5-1.5-1.5-2.5-3.5-3.5" />
+                        </g>
+                        <!-- Butterfly Bottom-Left -->
+                        <g transform="translate(20, 80) scale(0.3) rotate(-45)" fill="#6e262c">
+                            <path d="M12 10.5c-.13-1.34-.6-2.55-1.4-3.5C9.7 5.9 8.2 5 6.5 5 3.5 5 1 7.5 1 10.5c0 3.2 2.5 6.4 6 8.5.5-1.5 1.5-2.5 3.5-3.5M12 10.5c.13-1.34.6-2.55 1.4-3.5 1-1.1 2.4-2 4.1-2 3 0 5.5 2.5 5.5 5.5 0 3.2-2.5 6.4-6 8.5-.5-1.5-1.5-2.5-3.5-3.5" opacity="0.6"/>
+                        </g>
+                    </svg>
+                </div>
+            `;
+        }
+
+        // Render layout dynamically
         function getSlideHTML(slide, index) {
             const isHorizontal = slide.layout === 'horizontal';
             const accent = slide.accentColor;
+            const isFirstSlide = index === 0;
             
+            // Conditional date rendering markup (with slightly larger typography)
+            const dateHTML = slide.date ? `<div class="text-base lg:text-lg tracking-[0.45em] font-bold text-[#6e262c]/70 uppercase mt-2 mb-3 font-mono">${slide.date}</div>` : '';
+            
+            // COVER SLIDE SPECIAL REPLICATED STYLE FROM image_49a9a2.png (Enlarged Elements)
+            if (isFirstSlide) {
+                return `
+                    <div class="relative w-full h-full flex flex-col justify-between items-center py-4">
+                        <!-- Top header "SAVE THE DATE" -->
+                        <div class="text-center tracking-[0.55em] text-sm font-bold uppercase text-gray-500 mb-1">
+                            SAVE THE DATE
+                        </div>
+
+                        <!-- Central 3-Column Split (Left Name - Center Wreath Heart - Right Name) -->
+                        <div class="grid grid-cols-12 w-full h-full items-center justify-center px-4 max-h-[74vh]">
+                            
+                            <!-- Left: Bride Name "Thanh Tâm" splitted calligraphically (Enlarged) -->
+                            <div class="col-span-3 flex flex-col items-end text-right select-none pr-4">
+                                <div class="font-cursive text-9xl lg:text-10xl xl:text-[11.5rem] text-[#6e262c] leading-[0.55] tracking-wide transform -rotate-12 cursive-glow">Thanh</div>
+                                <div class="font-cursive text-9xl lg:text-10xl xl:text-[10.5rem] text-[#c5a059] leading-[0.55] mt-6 transform rotate-6 pl-12 cursive-glow">Tâm</div>
+                            </div>
+
+                            <!-- Center: Elegant Heart Frame containing photo - Enlarged (tri_4974.jpg) -->
+                            <div class="col-span-6 flex justify-center items-center relative">
+                                <div class="relative w-[380px] h-[380px] lg:w-[480px] lg:h-[480px] xl:w-[540px] xl:h-[540px] flex items-center justify-center">
+                                    <!-- Wreath SVG overlay with rose borders and butterflies -->
+                                    ${getWreathDecoration()}
+                                    
+                                    <!-- Masked Photo Container -->
+                                    <div class="w-full h-full overflow-hidden shadow-xl" style="clip-path: url(#heart-clip);">
+                                        <div class="w-full h-full bg-white p-1">
+                                            <div class="w-full h-full overflow-hidden" style="clip-path: url(#heart-clip);">
+                                                <img src="${slide.image}" alt="${slide.title}" class="w-full h-full object-cover zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Groom Name "Thanh Phương" splitted calligraphically (Enlarged) -->
+                            <div class="col-span-3 flex flex-col items-start text-left select-none pl-4">
+                                <div class="font-cursive text-9xl lg:text-10xl xl:text-[11.5rem] text-[#6e262c] leading-[0.55] tracking-wide transform rotate-12 cursive-glow">Thanh</div>
+                                <div class="font-cursive text-8xl lg:text-9xl xl:text-[9.5rem] text-[#c5a059] leading-[0.55] mt-6 transform -rotate-6 pr-12 cursive-glow">Phương</div>
+                            </div>
+
+                        </div>
+
+                        <!-- Bottom Footer (Golden Ornament, Wedding Date, Quote) -->
+                        <div class="flex flex-col items-center text-center mt-1">
+                            ${getHeartOrnament(accent)}
+                            ${dateHTML}
+                            <p class="text-sm lg:text-base italic text-[#6e262c]/80 font-light max-w-xl px-4 mt-1">"${slide.quote}"</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // SUBPAGES HIGH-END MATCHING LAYOUTS (Significantly enlarged layouts)
             if (isHorizontal) {
                 return `
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full h-full max-h-[90vh] items-center">
-                        <div class="lg:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-4 px-4">
-                            <span class="font-cursive text-4xl lg:text-5xl" style="color: ${accent};">${slide.subtitle}</span>
-                            <h2 class="font-serif text-3xl lg:text-4xl font-semibold tracking-wide text-gray-800 leading-tight">${slide.title}</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full h-full max-h-[92vh] items-center">
+                        <div class="lg:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 px-6">
+                            <span class="font-cursive text-5xl lg:text-6xl xl:text-7xl text-[#6e262c]" style="color: ${accent};">${slide.subtitle}</span>
+                            <h2 class="font-serif text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-wide text-[#6e262c] leading-tight">${slide.title}</h2>
                             ${getHeartOrnament(accent)}
-                            <p class="text-sm lg:text-base italic text-gray-600 font-light leading-relaxed max-w-sm mt-2">"${slide.quote}"</p>
+                            ${dateHTML}
+                            <p class="text-base lg:text-lg xl:text-xl italic text-gray-600 font-light leading-relaxed max-w-md mt-2">"${slide.quote}"</p>
                         </div>
-                        <div class="lg:col-span-8 flex justify-center items-center h-full max-h-[480px] lg:max-h-[640px]">
-                            <!-- Flexible Aspect Ratio Container to avoid cropping & blurriness -->
-                            <div class="relative max-h-[460px] lg:max-h-[600px] rounded-2xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2">
-                                <div class="h-full rounded-xl overflow-hidden relative">
-                                    <img src="${slide.image}" alt="${slide.title}" class="max-h-[440px] lg:max-h-[580px] w-auto object-contain rounded-lg zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                        <div class="lg:col-span-8 flex justify-center items-center h-full max-h-[520px] lg:max-h-[680px] xl:max-h-[740px]">
+                            <div class="relative w-full h-full flex justify-center items-center">
+                                <div class="relative w-[85%] aspect-[4/3] rounded-2xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2">
+                                    <div class="w-full h-full rounded-xl overflow-hidden relative">
+                                        <img src="${slide.image}" alt="${slide.title}" class="w-full h-full object-cover zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -290,18 +392,19 @@
                 `;
             } else {
                 return `
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full h-full max-h-[90vh] items-center">
-                        <div class="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-4 px-4">
-                            <span class="font-cursive text-4xl lg:text-5xl" style="color: ${accent};">${slide.subtitle}</span>
-                            <h2 class="font-serif text-3xl lg:text-4xl font-semibold tracking-wide text-gray-800 leading-tight">${slide.title}</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full h-full max-h-[92vh] items-center">
+                        <div class="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 px-6">
+                            <span class="font-cursive text-5xl lg:text-6xl xl:text-7xl text-[#6e262c]" style="color: ${accent};">${slide.subtitle}</span>
+                            <h2 class="font-serif text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-wide text-[#6e262c] leading-tight">${slide.title}</h2>
                             ${getHeartOrnament(accent)}
-                            <p class="text-sm lg:text-base italic text-gray-600 font-light leading-relaxed max-w-sm mt-2">"${slide.quote}"</p>
+                            ${dateHTML}
+                            <p class="text-base lg:text-lg xl:text-xl italic text-gray-600 font-light leading-relaxed max-w-md mt-2">"${slide.quote}"</p>
                         </div>
-                        <div class="lg:col-span-7 flex justify-center items-center h-full max-h-[500px] lg:max-h-[640px]">
+                        <div class="lg:col-span-7 flex justify-center items-center h-full max-h-[540px] lg:max-h-[700px] xl:max-h-[760px]">
                             <!-- Auto-scaling vertical frame that strictly honors original portrait aspect ratio -->
-                            <div class="relative max-h-[480px] lg:max-h-[620px] rounded-2xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2 flex justify-center items-center">
-                                <div class="h-full rounded-xl overflow-hidden relative">
-                                    <img src="${slide.image}" alt="${slide.title}" class="max-h-[460px] lg:max-h-[600px] w-auto object-contain rounded-lg zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                            <div class="relative max-h-[520px] lg:max-h-[680px] xl:max-h-[740px] rounded-3xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2 flex justify-center items-center">
+                                <div class="h-full rounded-2xl overflow-hidden relative">
+                                    <img src="${slide.image}" alt="${slide.title}" class="max-h-[500px] lg:max-h-[660px] xl:max-h-[720px] w-auto object-contain rounded-xl zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
                                 </div>
                             </div>
                         </div>
@@ -314,7 +417,7 @@
         function showPlaceholder(imgElement, title) {
             const parent = imgElement.parentElement;
             parent.innerHTML = `
-                <div class="w-full h-full bg-[#fbf9f6] flex flex-col items-center justify-center text-[#c5a059] p-6 text-center border-2 border-dashed border-[#e5cca8] rounded-lg">
+                <div class="w-full h-full bg-[#fbf9f6] flex flex-col items-center justify-center text-[#6e262c] p-6 text-center border-2 border-dashed border-[#e5cca8] rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-16 h-16 animate-pulse mb-3">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375 0 11-.75 0 .375 0 01.75 0z" />
                     </svg>
@@ -386,6 +489,7 @@
             resetTimer();
         }
 
+        // Automatic slides show control
         function startTimer() {
             clearInterval(slideInterval);
             if (isPlaying) {
@@ -400,6 +504,7 @@
             }
         }
 
+        // Play/Pause toggler
         function togglePlay() {
             isPlaying = !isPlaying;
             const pauseIcon = document.getElementById('pause-icon');
@@ -416,36 +521,49 @@
             }
         }
 
-        // Dynamic background particle engine
+        // Dynamic background particle engine (Includes both hearts and elegant butterflies)
         function initFloatingHearts() {
             const container = document.getElementById('hearts-bg');
-            const colors = ['#f5d6ce', '#eed5c5', '#fcece6', '#fff1eb'];
+            // Warm blush pinks, golds, and rosewoods matching image_49a9a2.png
+            const colors = ['#f5d6ce', '#eed5c5', '#6e262c', '#c5a059'];
             
             setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('floating-heart');
+                const particle = document.createElement('div');
+                particle.classList.add('floating-heart');
                 
-                const size = Math.random() * 20 + 10;
-                heart.style.width = `${size}px`;
-                heart.style.height = `${size}px`;
+                const size = Math.random() * 24 + 10;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
                 
-                heart.style.left = `${Math.random() * 100}vw`;
-                heart.style.animationDuration = `${Math.random() * 6 + 6}s`; // Between 6s and 12s
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDuration = `${Math.random() * 7 + 7}s`; // Between 7s and 14s
                 
                 const color = colors[Math.floor(Math.random() * colors.length)];
+                const isButterfly = Math.random() > 0.4; // 60% Butterflies, 40% Hearts
                 
-                heart.innerHTML = `
-                    <svg viewBox="0 0 512 512" fill="${color}">
-                        <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
-                    </svg>
-                `;
+                if (isButterfly) {
+                    // SVG vector path for a beautiful butterfly particle
+                    particle.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="${color}">
+                            <path d="M12 10.5c-.13-1.34-.6-2.55-1.4-3.5C9.7 5.9 8.2 5 6.5 5 3.5 5 1 7.5 1 10.5c0 3.2 2.5 6.4 6 8.5.5-1.5 1.5-2.5 3.5-3.5M12 10.5c.13-1.34.6-2.55 1.4-3.5 1-1.1 2.4-2 4.1-2 3 0 5.5 2.5 5.5 5.5 0 3.2-2.5 6.4-6 8.5-.5-1.5-1.5-2.5-3.5-3.5" />
+                        </svg>
+                    `;
+                } else {
+                    // SVG vector path for a traditional heart particle
+                    particle.innerHTML = `
+                        <svg viewBox="0 0 512 512" fill="${color}">
+                            <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
+                        </svg>
+                    `;
+                }
                 
-                container.appendChild(heart);
+                container.appendChild(particle);
                 
+                // Auto cleanup DOM elements
                 setTimeout(() => {
-                    heart.remove();
-                }, 12000);
-            }, 800);
+                    particle.remove();
+                }, 14000);
+            }, 750);
         }
 
         // Full Screen Mode Toggler (highly requested for clean projector view)
