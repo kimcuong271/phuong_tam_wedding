@@ -109,9 +109,9 @@
         </div>
 
         <!-- ROMANTIC HEART TRANSITION OVERLAY (The Heart-Wipe mechanism) -->
-        <div id="heart-overlay" class="pointer-events-none absolute inset-0 z-50 flex items-center justify-center opacity-0 transition-all duration-[600ms] ease-in-out">
+        <div id="heart-overlay" class="pointer-events-none absolute inset-0 z-50 flex items-center justify-center opacity-0 transition-opacity duration-300 ease-in-out">
             <!-- A massive SVG heart scaling from center to cover the entire projector grid -->
-            <svg id="transition-heart" viewBox="0 0 512 512" class="w-64 h-64 text-[#e0b094] fill-current transform scale-0 transition-transform duration-[600ms] ease-in-out" style="filter: drop-shadow(0 0 50px rgba(110, 38, 44, 0.8));">
+            <svg id="transition-heart" viewBox="0 0 512 512" class="w-64 h-64 text-[#e0b094] fill-current transform scale-0" style="filter: drop-shadow(0 0 50px rgba(110, 38, 44, 0.85)); transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);">
                 <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
             </svg>
         </div>
@@ -119,7 +119,7 @@
         <!-- CONTROL PANEL (Subtle overlay, fades away on idle) -->
         <div id="control-bar" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-4 px-6 py-3 rounded-full bg-black/40 backdrop-blur-md border border-white/10 opacity-100 transition-opacity duration-500 hover:opacity-100">
             <!-- Fullscreen Button -->
-            <button onclick="toggleFullScreen()" class="text-white/80 hover:text-white transition-colors" title="Bật/Tắt Toàn Màn Hình">
+            <button onclick="toggleFullScreen()" class="text-white/80 hover:text-white transition-colors" title="Bật/Tắt Toàn Màn Kinh">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0L15 15" />
                 </svg>
@@ -503,7 +503,7 @@
             `;
         }
 
-        // Heart-Wipe custom 3D scale transition (Perfected & Synchronized)
+        // Heart-Wipe custom 3D scale transition (Perfected, Synchronized & Redesigned to be highly cinematic)
         function transitionToSlide(nextIdx) {
             if (isTransitioning) return; // Ignore click events when transitions are active
             isTransitioning = true;
@@ -513,19 +513,23 @@
             const canvas = document.getElementById('slideshow-canvas');
             const contentArea = document.getElementById('slide-content');
             
-            // Enable pointer events during transition to block layout clicking
+            // Block all mouse clicks/touches during transition process
             overlay.style.pointerEvents = 'auto';
             
-            // Phase 1: Heart expands dynamically to cover viewport fully (scale 35)
-            heart.style.transform = 'scale(35)';
-            overlay.style.opacity = '1';
+            // Phase 1: Set transition values for ultra-fast, smooth, clean coverage
+            overlay.style.transition = 'opacity 300ms ease-in-out';
+            heart.style.transition = 'transform 700ms cubic-bezier(0.16, 1, 0.3, 1)'; // Smooth exponential ease-out
             
-            // Phase 2: Swap content at exactly 600ms (the absolute peak of overlay scale coverage)
+            // Trigger wipe-in
+            overlay.style.opacity = '1';
+            heart.style.transform = 'scale(45)'; // Expand heart to cover the entire projection canvas cleanly
+            
+            // Phase 2: Exactly at 700ms (when screen is fully masked), update backgrounds and texts
             setTimeout(() => {
                 currentIdx = nextIdx;
                 const currentSlide = slides[currentIdx];
                 
-                // Swap slide backgrounds gracefully - No black edges!
+                // Swap slide backgrounds gracefully
                 canvas.className = `relative z-10 w-full h-full overflow-hidden transition-all duration-[1200ms] ease-in-out ${currentSlide.bgClass}`;
                 
                 // Dynamically sync document body background to completely avoid letterboxing border colors
@@ -541,15 +545,20 @@
                 // Update counter numbers
                 document.getElementById('slide-counter').textContent = `${String(currentIdx + 1).padStart(2, '0')} / 11`;
 
-                // Phase 3: Give 50ms for slide to fully render, then shrink heart scale back down
+                // Phase 3: Smoothly FADE OUT the entire masked overlay.
+                // This eliminates the visual lag of shrinking the massive vector heart back down.
+                overlay.style.transition = 'opacity 600ms ease-in-out';
+                overlay.style.opacity = '0';
+                
+                // Once the overlay is completely transparent, reset the heart's scale ngầm (behind-the-scenes)
                 setTimeout(() => {
+                    heart.style.transition = 'none';
                     heart.style.transform = 'scale(0)';
-                    overlay.style.opacity = '0';
                     overlay.style.pointerEvents = 'none';
                     isTransitioning = false;
-                }, 50);
+                }, 600); // Matches the fade-out duration perfectly
                 
-            }, 600); // Matches the 600ms transition duration in style declarations perfectly
+            }, 700); // Matches the scale-up duration perfectly
         }
 
         // Navigation functions
