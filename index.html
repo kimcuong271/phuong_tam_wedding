@@ -15,7 +15,8 @@
         body {
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
-            background-color: #0c0806;
+            background-color: #ebd3c8; /* Warm ivory baseline to completely eliminate black flashes/edges */
+            transition: background-color 1200ms ease-in-out;
         }
         .font-serif {
             font-family: 'Playfair Display', serif;
@@ -98,8 +99,8 @@
     <!-- FLOATING HEARTS & BUTTERFLIES BACKGROUND EFFECT -->
     <div id="hearts-bg" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
 
-    <!-- MASTER CONTAINER (Standardized Widescreen 16:9 aspect ratio projection canvas) -->
-    <div id="slideshow-canvas" class="relative z-10 w-full h-full max-w-[1920px] max-h-[1080px] aspect-video overflow-hidden transition-all duration-[1200ms] ease-in-out bg-candlelight shadow-2xl">
+    <!-- MASTER CONTAINER (Stretches dynamically to 100% of display with zero black borders/edges) -->
+    <div id="slideshow-canvas" class="relative z-10 w-full h-full overflow-hidden transition-all duration-[1200ms] ease-in-out bg-candlelight shadow-2xl">
         
         <!-- ACTIVE SLIDE RENDER AREA -->
         <div id="slide-content" class="absolute inset-0 z-10 flex items-center justify-center p-6 md:p-10 lg:p-12 transition-opacity duration-700 ease-in-out">
@@ -156,7 +157,7 @@
         // Array containing all 11 slides with clean, URL-safe image paths for GitHub Pages
         const slides = [
             {
-                image: "tri_4974.JPG",
+                image: "tri_4974.jpg",
                 title: "Welcome to Our Beginning",
                 subtitle: "Thanh Tâm & Thanh Phương",
                 date: "06 . 06 . 2026",
@@ -166,7 +167,7 @@
                 accentColor: "#6e262c" // Romantic rosewood matching image_49a9a2.png
             },
             {
-                image: "tri_4879.JPG",
+                image: "tri_4879.jpg",
                 title: "The Dreamy Bride",
                 subtitle: "Nàng Thơ Lộng Lẫy",
                 quote: "Dịu dàng trong tà váy bồng bềnh, em là món quà tuyệt vời nhất mà anh có được trong cuộc đời.",
@@ -175,7 +176,7 @@
                 accentColor: "#6e262c"
             },
             {
-                image: "tri_4990.JPG",
+                image: "tri_4990.jpg",
                 title: "The Elegant Groom",
                 subtitle: "Chú Rể Bản Lĩnh",
                 quote: "Vững chãi, ấm áp, người sẽ luôn chở che và cùng em đi qua mọi bão giông cuộc đời.",
@@ -184,7 +185,7 @@
                 accentColor: "#6e262c"
             },
             {
-                image: "tri_4956.JPG",
+                image: "tri_4956.jpg",
                 title: "Symphony of Hearts",
                 subtitle: "Khúc Nhạc Tình Yêu",
                 quote: "Khi hai tâm hồn cùng hòa chung nhịp đập, mọi khoảng cách đều hóa hư vô.",
@@ -193,7 +194,7 @@
                 accentColor: "#6e262c"
             },
             {
-                image: "tri_4849.JPG",
+                image: "tri_4849.jpg",
                 title: "Our Golden Days",
                 subtitle: "Thế Giới Của Hai Ta",
                 quote: "Ánh mắt ta trao nhau chứa đựng những hẹn ước trăm năm ngọt ngào và bền chặt.",
@@ -202,7 +203,7 @@
                 accentColor: "#6e262c"
             },
             {
-                image: "tri_5007.JPG",
+                image: "tri_5007.jpg",
                 title: "A Bright Tomorrow",
                 subtitle: "Sánh Bước Tương Lai",
                 quote: "Bên nhau thanh lịch, tự tin mở lối tiến vào một tương lai tươi sáng và ngập tràn hạnh phúc.",
@@ -211,7 +212,7 @@
                 accentColor: "#c5a059"
             },
             {
-                image: "tri_5015.JPG",
+                image: "tri_5015.jpg",
                 title: "Joy & Sweet Laughter",
                 subtitle: "Khoảnh Khắc Rạng Rỡ",
                 quote: "Nụ cười rạng ngời của em chính là ánh ban mai sưởi ấm thế giới của anh mỗi ngày.",
@@ -220,7 +221,7 @@
                 accentColor: "#c5a059"
             },
             {
-                image: "tri_5021.JPG",
+                image: "tri_5021.jpg",
                 title: "A Tender Bloom",
                 subtitle: "Hương Sắc Hạnh Phúc",
                 quote: "Những đóa hoa nở rộ trên tay em như lời chúc phúc ngọt ngào nhất cho tình yêu bền chặt.",
@@ -229,7 +230,7 @@
                 accentColor: "#c5a059"
             },
             {
-                image: "tri_5029.JPG",
+                image: "tri_5029.jpg",
                 title: "The Promise of Love",
                 subtitle: "Hôn Ước Trăm Năm",
                 quote: "Một nụ hôn ngọt ngào thay vạn lời hứa, ta thuộc về nhau mãi mãi từ giây phút này.",
@@ -238,7 +239,7 @@
                 accentColor: "#c5a059"
             },
             {
-                image: "tri_5045.JPG",
+                image: "tri_5045.jpg",
                 title: "Perfect Companions",
                 subtitle: "Tựa Đầu Bên Nhau",
                 quote: "Dù cuộc sống có đổi thay, cái tựa tay ấm áp này vẫn mãi là điểm tựa bình yên nhất.",
@@ -247,7 +248,7 @@
                 accentColor: "#c5a059"
             },
             {
-                image: "tri_11.JPG", // 11th Photo Placeholder
+                image: "tri_4849.jpg", // Automatically fallback to use the gorgeous wide golden-set couple photo
                 title: "With Deep Gratitude",
                 subtitle: "Lời Cảm Ơn Chân Thành",
                 date: "06 . 06 . 2026",
@@ -306,14 +307,14 @@
             `;
         }
 
-        // Render layout dynamically
+        // Render layout dynamically (balanced text to photo ratio with frosted panel)
         function getSlideHTML(slide, index) {
             const isHorizontal = slide.layout === 'horizontal';
             const accent = slide.accentColor;
             const isFirstSlide = index === 0;
             
-            // Conditional date rendering markup (with slightly larger typography)
-            const dateHTML = slide.date ? `<div class="text-base lg:text-lg tracking-[0.45em] font-bold text-[#6e262c]/70 uppercase mt-2 mb-3 font-mono">${slide.date}</div>` : '';
+            // Conditional date rendering markup (with much larger typography)
+            const dateHTML = slide.date ? `<div class="text-xl lg:text-2xl xl:text-3xl tracking-[0.5em] font-extrabold text-[#6e262c] uppercase mt-3 mb-4 font-mono select-none">${slide.date}</div>` : '';
             
             // COVER SLIDE SPECIAL REPLICATED STYLE FROM image_49a9a2.png (Enlarged Elements)
             if (isFirstSlide) {
@@ -327,15 +328,15 @@
                         <!-- Central 3-Column Split (Left Name - Center Wreath Heart - Right Name) -->
                         <div class="grid grid-cols-12 w-full h-full items-center justify-center px-4 max-h-[74vh]">
                             
-                            <!-- Left: Bride Name "Thanh Tâm" splitted calligraphically (Enlarged) -->
+                            <!-- Left: Bride Name "Thanh Tâm" splitted calligraphically (Enlarged to 3 columns) -->
                             <div class="col-span-3 flex flex-col items-end text-right select-none pr-4">
-                                <div class="font-cursive text-9xl lg:text-10xl xl:text-[11.5rem] text-[#6e262c] leading-[0.55] tracking-wide transform -rotate-12 cursive-glow">Thanh</div>
-                                <div class="font-cursive text-9xl lg:text-10xl xl:text-[10.5rem] text-[#c5a059] leading-[0.55] mt-6 transform rotate-6 pl-12 cursive-glow">Tâm</div>
+                                <div class="font-cursive text-8xl lg:text-9xl xl:text-[9.5rem] text-[#6e262c] leading-[0.55] tracking-wide transform -rotate-12 cursive-glow">Thanh</div>
+                                <div class="font-cursive text-8xl lg:text-9xl xl:text-[8.5rem] text-[#c5a059] leading-[0.55] mt-6 transform rotate-6 pl-12 cursive-glow">Tâm</div>
                             </div>
 
-                            <!-- Center: Elegant Heart Frame containing photo - Enlarged (tri_4974.JPG) -->
+                            <!-- Center: Elegant Heart Frame containing photo (tri_4974.jpg) - Enlarged to 680px -->
                             <div class="col-span-6 flex justify-center items-center relative">
-                                <div class="relative w-[380px] h-[380px] lg:w-[480px] lg:h-[480px] xl:w-[540px] xl:h-[540px] flex items-center justify-center">
+                                <div class="relative w-[460px] h-[460px] lg:w-[580px] lg:h-[580px] xl:w-[680px] xl:h-[680px] flex items-center justify-center">
                                     <!-- Wreath SVG overlay with rose borders and butterflies -->
                                     ${getWreathDecoration()}
                                     
@@ -343,17 +344,17 @@
                                     <div class="w-full h-full overflow-hidden shadow-xl" style="clip-path: url(#heart-clip);">
                                         <div class="w-full h-full bg-white p-1">
                                             <div class="w-full h-full overflow-hidden" style="clip-path: url(#heart-clip);">
-                                                <img src="${slide.image}" alt="${slide.title}" class="w-full h-full object-cover zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                                                <img src="${slide.image}" alt="${slide.title}" class="w-full h-full object-cover zoom-in-active" onerror="handleImageError(this, '${slide.image}', '${slide.title}')">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Right: Groom Name "Thanh Phương" splitted calligraphically (Enlarged) -->
+                            <!-- Right: Groom Name "Thanh Phương" splitted calligraphically (Enlarged to 3 columns) -->
                             <div class="col-span-3 flex flex-col items-start text-left select-none pl-4">
-                                <div class="font-cursive text-9xl lg:text-10xl xl:text-[11.5rem] text-[#6e262c] leading-[0.55] tracking-wide transform rotate-12 cursive-glow">Thanh</div>
-                                <div class="font-cursive text-8xl lg:text-9xl xl:text-[9.5rem] text-[#c5a059] leading-[0.55] mt-6 transform -rotate-6 pr-12 cursive-glow">Phương</div>
+                                <div class="font-cursive text-8xl lg:text-9xl xl:text-[9.5rem] text-[#6e262c] leading-[0.55] tracking-wide transform rotate-12 cursive-glow">Thanh</div>
+                                <div class="font-cursive text-7xl lg:text-8xl xl:text-[8.5rem] text-[#c5a059] leading-[0.55] mt-6 transform -rotate-6 pr-12 cursive-glow">Phương</div>
                             </div>
 
                         </div>
@@ -368,22 +369,24 @@
                 `;
             }
 
-            // SUBPAGES HIGH-END MATCHING LAYOUTS (Significantly enlarged layouts)
+            // SUBPAGES HIGH-END MATCHING LAYOUTS (Optimized with 4-8 Split for larger photos)
             if (isHorizontal) {
                 return `
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full h-full max-h-[92vh] items-center">
-                        <div class="lg:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 px-6">
+                        <!-- Left Column: Frosted Editorial Text Panel (col-span-4) -->
+                        <div class="lg:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-6 px-8 py-10 bg-white/45 backdrop-blur-[6px] border border-white/60 rounded-3xl gold-shadow">
                             <span class="font-cursive text-5xl lg:text-6xl xl:text-7xl text-[#6e262c]" style="color: ${accent};">${slide.subtitle}</span>
-                            <h2 class="font-serif text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-wide text-[#6e262c] leading-tight">${slide.title}</h2>
+                            <h2 class="font-serif text-3xl lg:text-4xl xl:text-5xl font-semibold tracking-wide text-[#6e262c] leading-tight">${slide.title}</h2>
                             ${getHeartOrnament(accent)}
                             ${dateHTML}
-                            <p class="text-base lg:text-lg xl:text-xl italic text-gray-600 font-light leading-relaxed max-w-md mt-2">"${slide.quote}"</p>
+                            <p class="text-base lg:text-lg xl:text-xl italic text-gray-700 font-light leading-relaxed max-w-md">"${slide.quote}"</p>
                         </div>
-                        <div class="lg:col-span-8 flex justify-center items-center h-full max-h-[520px] lg:max-h-[680px] xl:max-h-[740px]">
+                        <!-- Right Column: Perfectly filled photo frame container - Enlarged to col-span-8 -->
+                        <div class="lg:col-span-8 flex justify-center items-center h-full max-h-[600px] lg:max-h-[760px] xl:max-h-[820px]">
                             <div class="relative w-full h-full flex justify-center items-center">
-                                <div class="relative w-[85%] aspect-[4/3] rounded-2xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2">
-                                    <div class="w-full h-full rounded-xl overflow-hidden relative">
-                                        <img src="${slide.image}" alt="${slide.title}" class="w-full h-full object-cover zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                                <div class="relative w-[100%] rounded-3xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2.5">
+                                    <div class="w-full h-full rounded-2xl overflow-hidden relative aspect-[4/3]">
+                                        <img src="${slide.image}" alt="${slide.title}" class="w-full h-full object-cover zoom-in-active" onerror="handleImageError(this, '${slide.image}', '${slide.title}')">
                                     </div>
                                 </div>
                             </div>
@@ -393,18 +396,20 @@
             } else {
                 return `
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full h-full max-h-[92vh] items-center">
-                        <div class="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 px-6">
+                        <!-- Left Column: Frosted Editorial Text Panel (col-span-4) -->
+                        <div class="lg:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-6 px-8 py-10 bg-white/45 backdrop-blur-[6px] border border-white/60 rounded-3xl gold-shadow">
                             <span class="font-cursive text-5xl lg:text-6xl xl:text-7xl text-[#6e262c]" style="color: ${accent};">${slide.subtitle}</span>
-                            <h2 class="font-serif text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-wide text-[#6e262c] leading-tight">${slide.title}</h2>
+                            <h2 class="font-serif text-3xl lg:text-4xl xl:text-5xl font-semibold tracking-wide text-[#6e262c] leading-tight">${slide.title}</h2>
                             ${getHeartOrnament(accent)}
                             ${dateHTML}
-                            <p class="text-base lg:text-lg xl:text-xl italic text-gray-600 font-light leading-relaxed max-w-md mt-2">"${slide.quote}"</p>
+                            <p class="text-base lg:text-lg xl:text-xl italic text-gray-700 font-light leading-relaxed max-w-md">"${slide.quote}"</p>
                         </div>
-                        <div class="lg:col-span-7 flex justify-center items-center h-full max-h-[540px] lg:max-h-[700px] xl:max-h-[760px]">
+                        <!-- Right Column: Balanced vertical frame - Enlarged to col-span-8 and 860px height -->
+                        <div class="lg:col-span-8 flex justify-center items-center h-full max-h-[600px] lg:max-h-[780px] xl:max-h-[860px]">
                             <!-- Auto-scaling vertical frame that strictly honors original portrait aspect ratio -->
-                            <div class="relative max-h-[520px] lg:max-h-[680px] xl:max-h-[740px] rounded-3xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2 flex justify-center items-center">
+                            <div class="relative max-h-[580px] lg:max-h-[760px] xl:max-h-[840px] rounded-3xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2.5 flex justify-center items-center">
                                 <div class="h-full rounded-2xl overflow-hidden relative">
-                                    <img src="${slide.image}" alt="${slide.title}" class="max-h-[500px] lg:max-h-[660px] xl:max-h-[720px] w-auto object-contain rounded-xl zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                                    <img src="${slide.image}" alt="${slide.title}" class="max-h-[560px] lg:max-h-[740px] xl:max-h-[820px] w-auto object-contain rounded-xl zoom-in-active" onerror="handleImageError(this, '${slide.image}', '${slide.title}')">
                                 </div>
                             </div>
                         </div>
@@ -413,18 +418,65 @@
             }
         }
 
-        // Image fallback handler with clear visual instructions
-        function showPlaceholder(imgElement, title) {
-            const parent = imgElement.parentElement;
+        // Handle image loading errors with sequential extension attempts (resolves case-sensitivity issues on GitHub Pages)
+        function handleImageError(imgElement, originalSrc, title) {
+            if (!imgElement.dataset.errorCount) {
+                imgElement.dataset.errorCount = 1;
+            } else {
+                imgElement.dataset.errorCount = parseInt(imgElement.dataset.errorCount) + 1;
+            }
+            
+            const count = parseInt(imgElement.dataset.errorCount);
+            const dotIndex = originalSrc.lastIndexOf('.');
+            if (dotIndex === -1) {
+                showBeautifulFallback(imgElement, title, originalSrc);
+                return;
+            }
+            
+            const baseName = originalSrc.substring(0, dotIndex);
+            
+            // Attempt different formats/cases sequentially (crucial for GitHub Pages / Linux servers)
+            if (count === 1) {
+                imgElement.src = baseName + ".JPG";
+            } else if (count === 2) {
+                imgElement.src = baseName + ".png";
+            } else if (count === 3) {
+                imgElement.src = baseName + ".PNG";
+            } else if (count === 4) {
+                imgElement.src = baseName + ".jpeg";
+            } else if (count === 5) {
+                imgElement.src = baseName + ".JPEG";
+            } else {
+                // If all attempts fail, render a gorgeous theme-matching placeholder card
+                showBeautifulFallback(imgElement, title, originalSrc);
+            }
+        }
+
+        // A beautiful, highly aesthetic fallback card that gracefully acts as a slide illustration
+        function showBeautifulFallback(imgElement, title, originalSrc) {
+            const parent = imgElement.closest('.relative');
+            if (!parent) return;
+            
             parent.innerHTML = `
-                <div class="w-full h-full bg-[#fbf9f6] flex flex-col items-center justify-center text-[#6e262c] p-6 text-center border-2 border-dashed border-[#e5cca8] rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-16 h-16 animate-pulse mb-3">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375 0 11-.75 0 .375 0 01.75 0z" />
+                <div class="w-full h-full min-h-[350px] bg-gradient-to-br from-[#fffdfa] to-[#fcf1eb] flex flex-col items-center justify-center text-[#6e262c] p-8 text-center rounded-2xl relative overflow-hidden border border-white/50 shadow-inner">
+                    <!-- Aesthetic Background Elements -->
+                    <div class="absolute -top-12 -left-12 w-36 h-36 rounded-full bg-[#e0b094]/10 pointer-events-none"></div>
+                    <div class="absolute -bottom-16 -right-16 w-52 h-52 rounded-full bg-[#6e262c]/5 pointer-events-none"></div>
+                    
+                    <!-- Interlocking Ring Art Symbolizing Everlasting Love -->
+                    <svg viewBox="0 0 100 100" class="w-24 h-24 text-[#c5a059] fill-none stroke-current stroke-[1.5] mb-4" style="filter: drop-shadow(0 4px 6px rgba(110,38,44,0.1));">
+                        <circle cx="43" cy="50" r="16" stroke="#c5a059" />
+                        <circle cx="57" cy="50" r="16" stroke="#6e262c" stroke-opacity="0.8" />
+                        <path d="M 50,38 C 50,38 48,34 44,34 C 40,34 38,38 41,41 L 50,50 L 59,41 C 62,38 60,34 56,34 C 52,34 50,38 50,38 Z" fill="#6e262c" opacity="0.15" stroke="none" />
                     </svg>
-                    <p class="font-serif text-lg font-semibold">${title}</p>
-                    <p class="text-xs text-gray-500 mt-2 max-w-xs">Đặt bức hình cưới có tên chính xác sau đây:</p>
-                    <code class="text-xs font-bold text-gray-700 bg-gray-100 px-2 py-1 my-1 rounded select-all border border-gray-200">${imgElement.getAttribute('src')}</code>
-                    <p class="text-[10px] text-gray-400">vào cùng một thư mục chứa tệp HTML này để ảnh tự động hiển thị.</p>
+                    
+                    <h3 class="font-serif text-2xl lg:text-3xl font-semibold tracking-wide text-gray-800 mb-1">${title}</h3>
+                    <p class="font-cursive text-3.5xl text-[#c5a059] mb-4 cursive-glow">Thanh Tâm & Thanh Phương</p>
+                    <div class="h-[1px] w-24 bg-[#6e262c]/10 mb-4"></div>
+                    
+                    <p class="text-xs text-gray-400 font-light max-w-md leading-relaxed">
+                        <strong class="text-gray-600 font-medium">Lưu ý nhỏ cho ban kỹ thuật:</strong> Nếu bạn có tệp ảnh cưới thứ 11, hãy đặt tên tệp chính xác là <code class="bg-white/80 text-red-600 px-1.5 py-0.5 rounded font-mono font-semibold select-all">${originalSrc}</code> (hoặc viết hoa .JPG, .PNG) rồi đặt vào cùng một thư mục chạy slide để hiển thị ảnh tuyệt đẹp này nhé!
+                    </p>
                 </div>
             `;
         }
@@ -451,8 +503,15 @@
                 currentIdx = nextIdx;
                 const currentSlide = slides[currentIdx];
                 
-                // Swap slide backgrounds gracefully
-                canvas.className = `relative w-full h-full max-w-[1920px] max-h-[1080px] aspect-video overflow-hidden transition-all duration-[1200ms] ease-in-out ${currentSlide.bgClass}`;
+                // Swap slide backgrounds gracefully - No black edges!
+                canvas.className = `relative z-10 w-full h-full overflow-hidden transition-all duration-[1200ms] ease-in-out ${currentSlide.bgClass}`;
+                
+                // Dynamically sync document body background to completely avoid letterboxing border colors
+                if (currentSlide.bgClass === 'bg-candlelight') {
+                    document.body.style.backgroundColor = '#ebd3c8';
+                } else {
+                    document.body.style.backgroundColor = '#f3ded5';
+                }
                 
                 // Swap layout structure
                 contentArea.innerHTML = getSlideHTML(currentSlide, currentIdx);
@@ -604,7 +663,10 @@
         window.onload = function() {
             const currentSlide = slides[currentIdx];
             const canvas = document.getElementById('slideshow-canvas');
-            canvas.className = `relative w-full h-full max-w-[1920px] max-h-[1080px] aspect-video overflow-hidden transition-all duration-[1200ms] ease-in-out ${currentSlide.bgClass}`;
+            
+            // Initial render setting body background matching candlelight
+            document.body.style.backgroundColor = '#ebd3c8';
+            canvas.className = `relative z-10 w-full h-full overflow-hidden transition-all duration-[1200ms] ease-in-out ${currentSlide.bgClass}`;
             
             document.getElementById('slide-content').innerHTML = getSlideHTML(currentSlide, currentIdx);
             
