@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Dream Wedding - Love Story Slideshow</title>
+    <!-- Tailwind CSS CDN for high-end styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            background-color: #0c0806;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-cursive {
+            font-family: 'Alex Brush', cursive;
+        }
+        /* Custom slide backgrounds with premium transitions */
+        .bg-candlelight {
+            background: radial-gradient(circle, #fffbf9 0%, #f9f1ec 70%, #f0e1d7 100%);
+        }
+        .bg-white-glow {
+            background: radial-gradient(circle, #ffffff 0%, #fafafa 70%, #f2f2f2 100%);
+        }
+        
+        /* Ultra-sharp image rendering optimization */
+        img {
+            image-rendering: -webkit-optimize-contrast; /* Crisp rendering on Webkit/Safari */
+            image-rendering: crisp-edges;
+            backface-visibility: hidden;
+            transform: translateZ(0); /* Force GPU acceleration for crisp zoom */
+        }
+
+        /* Subtle luxury zoom animation to keep vertical images 100% sharp and un-blurred */
+        .zoom-in-active {
+            animation: softZoom 7.5s ease-out forwards;
+        }
+        @keyframes softZoom {
+            from { transform: scale(1.0); }
+            to { transform: scale(1.03); } /* Mild scale to completely prevent blurriness */
+        }
+        /* Golden romantic border shadow for photo frames */
+        .gold-shadow {
+            box-shadow: 0 20px 45px rgba(197, 160, 89, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        /* Hide mouse cursor after idle */
+        .cursor-none {
+            cursor: none;
+        }
+        /* Floating hearts styling */
+        .floating-heart {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            animation: floatUp 8s ease-in-out infinite;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) translateX(0) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.25;
+            }
+            85% {
+                opacity: 0.25;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="w-screen h-screen flex items-center justify-center relative select-none bg-[#0c0806]">
+
+    <!-- FLOATING HEARTS BACKGROUND EFFECT -->
+    <div id="hearts-bg" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- MASTER CONTAINER (Standardized Widescreen 16:9 aspect ratio projection canvas) -->
+    <div id="slideshow-canvas" class="relative z-10 w-full h-full max-w-[1920px] max-h-[1080px] aspect-video overflow-hidden transition-all duration-[1200ms] ease-in-out bg-candlelight shadow-2xl">
+        
+        <!-- ACTIVE SLIDE RENDER AREA -->
+        <div id="slide-content" class="absolute inset-0 z-10 flex items-center justify-center p-8 md:p-12 lg:p-16 transition-opacity duration-700 ease-in-out">
+            <!-- Content gets injected dynamically by JavaScript -->
+        </div>
+
+        <!-- ROMANTIC HEART TRANSITION OVERLAY (The Heart-Wipe mechanism) -->
+        <div id="heart-overlay" class="pointer-events-none absolute inset-0 z-50 flex items-center justify-center opacity-0 transition-all duration-[600ms] ease-in-out">
+            <!-- A massive SVG heart scaling from center to cover the entire projector grid -->
+            <svg id="transition-heart" viewBox="0 0 512 512" class="w-64 h-64 text-[#e0b094] fill-current transform scale-0 transition-transform duration-[600ms] ease-in-out" style="filter: drop-shadow(0 0 50px rgba(197, 160, 89, 0.8));">
+                <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
+            </svg>
+        </div>
+
+        <!-- CONTROL PANEL (Subtle overlay, fades away on idle) -->
+        <div id="control-bar" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-4 px-6 py-3 rounded-full bg-black/40 backdrop-blur-md border border-white/10 opacity-100 transition-opacity duration-500 hover:opacity-100">
+            <!-- Fullscreen Button -->
+            <button onclick="toggleFullScreen()" class="text-white/80 hover:text-white transition-colors" title="Bật/Tắt Toàn Màn Hình">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0L15 15" />
+                </svg>
+            </button>
+            <div class="h-4 w-px bg-white/20"></div>
+            <!-- Prev Slide -->
+            <button onclick="prevSlide()" class="text-white/80 hover:text-white transition-colors" title="Trang trước">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            <!-- Play/Pause -->
+            <button id="play-pause-btn" onclick="togglePlay()" class="text-white/80 hover:text-white transition-colors" title="Tạm dừng / Tiếp tục">
+                <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                </svg>
+                <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 hidden">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                </svg>
+            </button>
+            <!-- Next Slide -->
+            <button onclick="nextSlide()" class="text-white/80 hover:text-white transition-colors" title="Trang sau">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+            <div class="h-4 w-px bg-white/20"></div>
+            <!-- Slide Counter Display -->
+            <span id="slide-counter" class="text-white/80 text-xs font-mono select-none">01 / 11</span>
+        </div>
+
+    </div>
+
+    <!-- MAIN PRESENTATION SCRIPT -->
+    <script>
+        // Array containing all 11 slides with updated and accurate image mappings
+        const slides = [
+            {
+                image: "Bản sao của TRI_4974.jpg",
+                title: "Welcome to Our Beginning",
+                subtitle: "Tình Yêu Khởi Đầu",
+                quote: "Hôm nay, một chương mới chính thức bắt đầu trong hành trình hạnh phúc của hai chúng ta.",
+                layout: "horizontal",
+                bgClass: "bg-candlelight",
+                accentColor: "#c5a059"
+            },
+            {
+                image: "Bản sao của TRI_4879.jpg",
+                title: "The Dreamy Bride",
+                subtitle: "Nàng Thơ Lộng Lẫy",
+                quote: "Dịu dàng trong tà váy bồng bềnh, em là món quà tuyệt vời nhất mà anh có được trong cuộc đời.",
+                layout: "vertical",
+                bgClass: "bg-candlelight",
+                accentColor: "#c5a059"
+            },
+            {
+                image: "Bản sao của TRI_4990.jpg",
+                title: "The Elegant Groom",
+                subtitle: "Chú Rể Bản Lĩnh",
+                quote: "Vững chãi, ấm áp, người sẽ luôn chở che và cùng em đi qua mọi bão giông cuộc đời.",
+                layout: "vertical",
+                bgClass: "bg-candlelight",
+                accentColor: "#c5a059"
+            },
+            {
+                image: "Bản sao của TRI_4956.jpg",
+                title: "Symphony of Hearts",
+                subtitle: "Khúc Nhạc Tình Yêu",
+                quote: "Khi hai tâm hồn cùng hòa chung nhịp đập, mọi khoảng cách đều hóa hư vô.",
+                layout: "vertical",
+                bgClass: "bg-candlelight",
+                accentColor: "#c5a059"
+            },
+            {
+                image: "Bản sao của TRI_4849.jpg",
+                title: "Our Golden Days",
+                subtitle: "Thế Giới Của Hai Ta",
+                quote: "Ánh mắt ta trao nhau chứa đựng những hẹn ước trăm năm ngọt ngào và bền chặt.",
+                layout: "horizontal",
+                bgClass: "bg-candlelight",
+                accentColor: "#c5a059"
+            },
+            {
+                image: "Bản sao của TRI_5007.jpg",
+                title: "A Bright Tomorrow",
+                subtitle: "Sánh Bước Tương Lai",
+                quote: "Bên nhau thanh lịch, tự tin mở lối tiến vào một tương lai tươi sáng và ngập tràn hạnh phúc.",
+                layout: "vertical",
+                bgClass: "bg-white-glow",
+                accentColor: "#d2ab99"
+            },
+            {
+                image: "Bản sao của TRI_5015.jpg",
+                title: "Joy & Sweet Laughter",
+                subtitle: "Khoảnh Khắc Rạng Rỡ",
+                quote: "Nụ cười rạng ngời của em chính là ánh ban mai sưởi ấm thế giới của anh mỗi ngày.",
+                layout: "vertical",
+                bgClass: "bg-white-glow",
+                accentColor: "#d2ab99"
+            },
+            {
+                image: "Bản sao của TRI_5021.jpg",
+                title: "A Tender Bloom",
+                subtitle: "Hương Sắc Hạnh Phúc",
+                quote: "Những đóa hoa nở rộ trên tay em như lời chúc phúc ngọt ngào nhất cho tình yêu bền chặt.",
+                layout: "vertical",
+                bgClass: "bg-white-glow",
+                accentColor: "#d2ab99"
+            },
+            {
+                image: "Bản sao của TRI_5029.jpg",
+                title: "The Promise of Love",
+                subtitle: "Hôn Ước Trăm Năm",
+                quote: "Một nụ hôn ngọt ngào thay vạn lời hứa, ta thuộc về nhau mãi mãi từ giây phút này.",
+                layout: "vertical",
+                bgClass: "bg-white-glow",
+                accentColor: "#d2ab99"
+            },
+            {
+                image: "Bản sao của TRI_5045.jpg",
+                title: "Perfect Companions",
+                subtitle: "Tựa Đầu Bên Nhau",
+                quote: "Dù cuộc sống có đổi thay, cái tựa tay ấm áp này vẫn mãi là điểm tựa bình yên nhất.",
+                layout: "vertical",
+                bgClass: "bg-white-glow",
+                accentColor: "#d2ab99"
+            },
+            {
+                image: "Bản sao của TRI_11.jpg", // 11th Photo Placeholder
+                title: "With Deep Gratitude",
+                subtitle: "Lời Cảm Ơn Chân Thành",
+                quote: "Chúng con xin trân trọng cảm ơn gia đình, bạn bè và quý quan khách đã đến chung vui, chúc phúc.",
+                layout: "horizontal",
+                bgClass: "bg-candlelight",
+                accentColor: "#c5a059"
+            }
+        ];
+
+        let currentIdx = 0;
+        let isPlaying = true;
+        let slideInterval = null;
+        const autoAdvanceTime = 6500; // 6.5s auto advance for peaceful reading
+        let lastInteractionTime = Date.now();
+        let isTransitioning = false; // Flag to prevent multiple rapid clicks during active animation
+
+        // Dynamic Heart Ribbon design
+        function getHeartOrnament(accent) {
+            return `
+                <div class="flex items-center justify-center gap-4 my-2 opacity-95 w-full max-w-[280px]">
+                    <div class="h-[1px] flex-1" style="background: linear-gradient(to right, transparent, ${accent});"></div>
+                    <svg viewBox="0 0 100 45" class="w-12 h-6" style="fill: ${accent};">
+                        <path d="M 35,15 C 31,9 23,9 19,15 C 14,22 25,32 35,38 C 45,32 56,22 51,15 C 47,9 39,9 35,15 Z" />
+                        <path d="M 65,15 C 61,9 53,9 49,15 C 44,22 55,32 65,38 C 75,32 86,22 81,15 C 77,9 69,9 65,15 Z" opacity="0.85" />
+                    </svg>
+                    <div class="h-[1px] flex-1" style="background: linear-gradient(to left, transparent, ${accent});"></div>
+                </div>
+            `;
+        }
+
+        // Render layout dynamically - perfectly scaled to maintain 100% native resolution clarity
+        function getSlideHTML(slide, index) {
+            const isHorizontal = slide.layout === 'horizontal';
+            const accent = slide.accentColor;
+            
+            if (isHorizontal) {
+                return `
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full h-full max-h-[90vh] items-center">
+                        <div class="lg:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-4 px-4">
+                            <span class="font-cursive text-4xl lg:text-5xl" style="color: ${accent};">${slide.subtitle}</span>
+                            <h2 class="font-serif text-3xl lg:text-4xl font-semibold tracking-wide text-gray-800 leading-tight">${slide.title}</h2>
+                            ${getHeartOrnament(accent)}
+                            <p class="text-sm lg:text-base italic text-gray-600 font-light leading-relaxed max-w-sm mt-2">"${slide.quote}"</p>
+                        </div>
+                        <div class="lg:col-span-8 flex justify-center items-center h-full max-h-[480px] lg:max-h-[640px]">
+                            <!-- Flexible Aspect Ratio Container to avoid cropping & blurriness -->
+                            <div class="relative max-h-[460px] lg:max-h-[600px] rounded-2xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2">
+                                <div class="h-full rounded-xl overflow-hidden relative">
+                                    <img src="${slide.image}" alt="${slide.title}" class="max-h-[440px] lg:max-h-[580px] w-auto object-contain rounded-lg zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full h-full max-h-[90vh] items-center">
+                        <div class="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-4 px-4">
+                            <span class="font-cursive text-4xl lg:text-5xl" style="color: ${accent};">${slide.subtitle}</span>
+                            <h2 class="font-serif text-3xl lg:text-4xl font-semibold tracking-wide text-gray-800 leading-tight">${slide.title}</h2>
+                            ${getHeartOrnament(accent)}
+                            <p class="text-sm lg:text-base italic text-gray-600 font-light leading-relaxed max-w-sm mt-2">"${slide.quote}"</p>
+                        </div>
+                        <div class="lg:col-span-7 flex justify-center items-center h-full max-h-[500px] lg:max-h-[640px]">
+                            <!-- Auto-scaling vertical frame that strictly honors original portrait aspect ratio -->
+                            <div class="relative max-h-[480px] lg:max-h-[620px] rounded-2xl overflow-hidden gold-shadow border border-[#f5e9d9] bg-white p-2 flex justify-center items-center">
+                                <div class="h-full rounded-xl overflow-hidden relative">
+                                    <img src="${slide.image}" alt="${slide.title}" class="max-h-[460px] lg:max-h-[600px] w-auto object-contain rounded-lg zoom-in-active" onerror="showPlaceholder(this, '${slide.title}')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Image fallback handler with clear visual instructions
+        function showPlaceholder(imgElement, title) {
+            const parent = imgElement.parentElement;
+            parent.innerHTML = `
+                <div class="w-full h-full bg-[#fbf9f6] flex flex-col items-center justify-center text-[#c5a059] p-6 text-center border-2 border-dashed border-[#e5cca8] rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-16 h-16 animate-pulse mb-3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375 0 11-.75 0 .375 0 01.75 0z" />
+                    </svg>
+                    <p class="font-serif text-lg font-semibold">${title}</p>
+                    <p class="text-xs text-gray-500 mt-2 max-w-xs">Đặt bức hình cưới có tên chính xác sau đây:</p>
+                    <code class="text-xs font-bold text-gray-700 bg-gray-100 px-2 py-1 my-1 rounded select-all border border-gray-200">${imgElement.getAttribute('src')}</code>
+                    <p class="text-[10px] text-gray-400">vào cùng một thư mục chứa tệp HTML này để ảnh tự động hiển thị.</p>
+                </div>
+            `;
+        }
+
+        // Heart-Wipe custom 3D scale transition (Perfected & Synchronized)
+        function transitionToSlide(nextIdx) {
+            if (isTransitioning) return; // Ignore click events when transitions are active
+            isTransitioning = true;
+
+            const overlay = document.getElementById('heart-overlay');
+            const heart = document.getElementById('transition-heart');
+            const canvas = document.getElementById('slideshow-canvas');
+            const contentArea = document.getElementById('slide-content');
+            
+            // Enable pointer events during transition to block layout clicking
+            overlay.style.pointerEvents = 'auto';
+            
+            // Phase 1: Heart expands dynamically to cover viewport fully (scale 35)
+            heart.style.transform = 'scale(35)';
+            overlay.style.opacity = '1';
+            
+            // Phase 2: Swap content at exactly 600ms (the absolute peak of overlay scale coverage)
+            setTimeout(() => {
+                currentIdx = nextIdx;
+                const currentSlide = slides[currentIdx];
+                
+                // Swap slide backgrounds gracefully
+                canvas.className = `relative w-full h-full max-w-[1920px] max-h-[1080px] aspect-video overflow-hidden transition-all duration-[1200ms] ease-in-out ${currentSlide.bgClass}`;
+                
+                // Swap layout structure
+                contentArea.innerHTML = getSlideHTML(currentSlide, currentIdx);
+                
+                // Update counter numbers
+                document.getElementById('slide-counter').textContent = `${String(currentIdx + 1).padStart(2, '0')} / 11`;
+
+                // Phase 3: Give 50ms for slide to fully render, then shrink heart scale back down
+                setTimeout(() => {
+                    heart.style.transform = 'scale(0)';
+                    overlay.style.opacity = '0';
+                    overlay.style.pointerEvents = 'none';
+                    isTransitioning = false;
+                }, 50);
+                
+            }, 600); // Matches the 600ms transition duration in style declarations perfectly
+        }
+
+        // Navigation functions
+        function nextSlide() {
+            if (isTransitioning) return;
+            let next = currentIdx + 1;
+            if (next >= slides.length) next = 0;
+            transitionToSlide(next);
+            resetTimer();
+        }
+
+        // Prev slide trigger
+        function prevSlide() {
+            if (isTransitioning) return;
+            let prev = currentIdx - 1;
+            if (prev < 0) prev = slides.length - 1;
+            transitionToSlide(prev);
+            resetTimer();
+        }
+
+        function startTimer() {
+            clearInterval(slideInterval);
+            if (isPlaying) {
+                slideInterval = setInterval(nextSlide, autoAdvanceTime);
+            }
+        }
+
+        // Automation reset
+        function resetTimer() {
+            if (isPlaying) {
+                startTimer();
+            }
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const pauseIcon = document.getElementById('pause-icon');
+            const playIcon = document.getElementById('play-icon');
+            
+            if (isPlaying) {
+                pauseIcon.classList.remove('hidden');
+                playIcon.classList.add('hidden');
+                startTimer();
+            } else {
+                pauseIcon.classList.add('hidden');
+                playIcon.classList.remove('hidden');
+                clearInterval(slideInterval);
+            }
+        }
+
+        // Dynamic background particle engine
+        function initFloatingHearts() {
+            const container = document.getElementById('hearts-bg');
+            const colors = ['#f5d6ce', '#eed5c5', '#fcece6', '#fff1eb'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                
+                const size = Math.random() * 20 + 10;
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.animationDuration = `${Math.random() * 6 + 6}s`; // Between 6s and 12s
+                
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                heart.innerHTML = `
+                    <svg viewBox="0 0 512 512" fill="${color}">
+                        <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
+                    </svg>
+                `;
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 12000);
+            }, 800);
+        }
+
+        // Full Screen Mode Toggler (highly requested for clean projector view)
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Cinema Mode controls
+        function registerIdleHandler() {
+            const controlBar = document.getElementById('control-bar');
+            
+            function onInteraction() {
+                lastInteractionTime = Date.now();
+                controlBar.style.opacity = '1';
+                document.body.classList.remove('cursor-none');
+            }
+
+            document.addEventListener('mousemove', onInteraction);
+            document.addEventListener('keydown', onInteraction);
+            document.addEventListener('click', onInteraction);
+            document.addEventListener('touchstart', onInteraction);
+
+            setInterval(() => {
+                if (Date.now() - lastInteractionTime > 3000) {
+                    controlBar.style.opacity = '0';
+                    document.body.classList.add('cursor-none');
+                }
+            }, 1000);
+        }
+
+        // Bootstrapping
+        window.onload = function() {
+            const currentSlide = slides[currentIdx];
+            const canvas = document.getElementById('slideshow-canvas');
+            canvas.className = `relative w-full h-full max-w-[1920px] max-h-[1080px] aspect-video overflow-hidden transition-all duration-[1200ms] ease-in-out ${currentSlide.bgClass}`;
+            
+            document.getElementById('slide-content').innerHTML = getSlideHTML(currentSlide, currentIdx);
+            
+            startTimer();
+            registerIdleHandler();
+            initFloatingHearts();
+            
+            // Support global keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    togglePlay();
+                } else if (e.code === 'ArrowRight') {
+                    nextSlide();
+                } else if (e.code === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
